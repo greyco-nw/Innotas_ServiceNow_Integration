@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_133346_innotas.InnotasIntegrationServer</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>InnotasIntegrationServer</name>
+        <script><![CDATA[var InnotasIntegrationServer = Class.create();
+InnotasIntegrationServer.prototype = {
+    initialize: function () {
+	 
+   },
+   
+    type: 'InnotasIntegrationServer'
+};
+var instanceName="";
+ 
+var InnotasIntegrationServer = Class.create();
+InnotasIntegrationServer.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+    findEntity: function (entityType, searchValue, searchId) {
+        switch (entityType) {
+            case "project": entityType = 4; break;
+            case "resources": entityType = 11; break;
+
+        }
+        try {
+            var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.findEntity');
+
+            //override authentication profile 
+            //authentication type ='basic'
+            //r.setAuthentication(authentication type,profile name);
+
+            s.setStringParameter('searchValuePairs.elementValue', searchValue);
+            s.setStringParameter('findEntity.entityTypeId', '');
+            s.setStringParameter('findEntity.fieldsRequest', '');
+            s.setStringParameter('findEntity.sessionId', this.getToken());
+            s.setStringParameter('searchValuePairs.id', searchId);
+            var response = s.execute();
+            var responseBody = response.getBody();
+            var status = response.getStatusCode();
+            return responseBody;
+        }
+        catch (ex) {
+            var message = ex.getMessage();
+            gs.print(message);
+        }
+    },
+    clearFieldTable: function (entityName) {
+        var rec = new GlideRecord("u_innotas_field_data");
+        rec.addQuery('u_entity_name', entityName);
+		rec.query();
+		var i=0;
+		while (rec.next())
+		{
+			rec.deleteRecord();
+			i++;
+		}
+        gs.print("Records deleted:" + i);
+    },
+    buildFieldDataTable: function () {
+        this.getEntityFields(1, "Organization");
+        this.getEntityFields(2, "Division");
+        this.getEntityFields(3, "Client");
+        this.getEntityFields(4, "Project");
+        this.getEntityFields(5, "Task");
+        this.getEntityFields(6, "Project Log");
+        this.getEntityFields(8, "Attachment");
+        this.getEntityFields(11, "Resource");
+        this.getEntityFields(12, "Enterprise");
+        this.getEntityFields(13, "Summary Task");
+        this.getEntityFields(15, "Material Estimate");
+        this.getEntityFields(18, "Addl Contact Email/Phone");
+        this.getEntityFields(19, "Contact");
+        this.getEntityFields(20, "Timesheet");
+        this.getEntityFields(22, "Expense Manager");
+        this.getEntityFields(23, "User");
+        this.getEntityFields(24, "Attachment Content");
+        this.getEntityFields(25, "Alert");
+        this.getEntityFields(26, "Alert Route");
+        this.getEntityFields(27, "User Notification");
+        this.getEntityFields(29, "Association");
+        this.getEntityFields(30, "Alert Log");
+        this.getEntityFields(32, "Office");
+        this.getEntityFields(33, "Skill Range");
+        this.getEntityFields(34, "Skill Category");
+        this.getEntityFields(35, "Skill Subcategory");
+        this.getEntityFields(36, "Skill Range Value");
+        this.getEntityFields(37, "Skill Set");
+        this.getEntityFields(38, "Role");
+        this.getEntityFields(50, "Address");
+        this.getEntityFields(52, "Task Role");
+        this.getEntityFields(53, "Team Member");
+        this.getEntityFields(54, "Associated Role");
+        this.getEntityFields(56, "To Date");
+        this.getEntityFields(57, "Filter");
+        this.getEntityFields(58, "Filter Criteria");
+        this.getEntityFields(59, "Lookup List");
+        this.getEntityFields(60, "Status List");
+        this.getEntityFields(63, "Report");
+        this.getEntityFields(64, "Report");
+        this.getEntityFields(65, "Note");
+        this.getEntityFields(66, "Timesheet Entry");
+        this.getEntityFields(68, "Fixed Bid Invoice");
+        this.getEntityFields(69, "Fixed Bid Invoice Item");
+        this.getEntityFields(71, "Expense Entry");
+        this.getEntityFields(73, "Dependency");
+        this.getEntityFields(74, "UDF");
+        this.getEntityFields(76, "UDF Default Value");
+        this.getEntityFields(77, "Band Field");
+        this.getEntityFields(78, "Region");
+        this.getEntityFields(79, "Task Schedule");
+        this.getEntityFields(82, "OBJECT82.");
+        this.getEntityFields(83, "OBJECT83.");
+        this.getEntityFields(87, "Request Type");
+        this.getEntityFields(96, "Request");
+        this.getEntityFields(97, "HR Issue");
+        this.getEntityFields(99, "Gate");
+        this.getEntityFields(100, "Role Group");
+        this.getEntityFields(105, "Baseline");
+        this.getEntityFields(106, "Baseline Entry");
+        this.getEntityFields(107, "Allotment");
+        this.getEntityFields(109, "Dashboard");
+        this.getEntityFields(110, "IP Range");
+        this.getEntityFields(111, "Health Profile");
+        this.getEntityFields(112, "TimingOfPage");
+        this.getEntityFields(113, "OBJECT113.");
+        this.getEntityFields(114, "Portfolio");
+        this.getEntityFields(115, "Portfolio Category");
+        this.getEntityFields(116, "Portfolio Project");
+        this.getEntityFields(117, "Sub Portfolio");
+        this.getEntityFields(120, "Staffing Request");
+        this.getEntityFields(123, "Staffing Assignment");
+        this.getEntityFields(126, "Escalation Profile");
+        this.getEntityFields(127, "Ticket Type");
+        this.getEntityFields(128, "Ticket");
+        this.getEntityFields(129, "Lookup List Value");
+        this.getEntityFields(133, "Portfolio Class");
+        this.getEntityFields(141, "Published Item");
+        this.getEntityFields(150, "Scoring Category");
+        this.getEntityFields(151, "Scoring Criteria");
+        this.getEntityFields(152, "Scoring Profile");
+        this.getEntityFields(153, "Scoring Profile Category Link");
+        this.getEntityFields(154, "Scoring Profile Criteria Link");
+        this.getEntityFields(157, "MTCache");
+        this.getEntityFields(158, "MTCache");
+        this.getEntityFields(159, "Asset Class");
+        this.getEntityFields(160, "Artifact Class");
+        this.getEntityFields(161, "Artifact Category");
+        this.getEntityFields(162, "User Score");
+        this.getEntityFields(165, "Asset Category");
+        this.getEntityFields(166, "Asset");
+        this.getEntityFields(168, "OBJECT168.");
+        this.getEntityFields(173, "Group");
+        this.getEntityFields(174, "Group Member");
+        this.getEntityFields(189, "What If Scenario");
+        this.getEntityFields(190, "OBJECT190.");
+        this.getEntityFields(191, "OBJECT191.");
+        this.getEntityFields(192, "OBJECT192.");
+        this.getEntityFields(193, "MTCache");
+        this.getEntityFields(194, "MTCache");
+        this.getEntityFields(195, "Scheduled Job");
+        this.getEntityFields(196, "OBJECT196.");
+        this.getEntityFields(197, "OBJECT197.");
+        this.getEntityFields(198, "Billing Rate");
+        this.getEntityFields(199, "OBJECT199.");
+        this.getEntityFields(200, "OBJECT200.");
+        this.getEntityFields(201, "OBJECT201.");
+        this.getEntityFields(202, "Status List Values");
+        this.getEntityFields(210, "OBJECT210.");
+        this.getEntityFields(211, "OBJECT211.");
+        this.getEntityFields(212, "OBJECT212.");
+        this.getEntityFields(213, "OBJECT213.");
+        this.getEntityFields(214, "OBJECT214.");
+        this.getEntityFields(215, "OBJECT215.");
+        this.getEntityFields(220, "OBJECT220.");
+        this.getEntityFields(221, "OBJECT221.");
+        this.getEntityFields(222, "OBJECT222.");
+        this.getEntityFields(223, "OBJECT223.");
+        this.getEntityFields(224, "Project-Predecessor");
+        this.getEntityFields(225, "Project-Successor");
+        this.getEntityFields(226, "Task Category");
+        this.getEntityFields(227, "Staff Request");
+        this.getEntityFields(228, "Project Log Category");
+        this.getEntityFields(229, "Unit");
+        this.getEntityFields(230, "Unit Association");
+        this.getEntityFields(231, "OBJECT231.");
+        this.getEntityFields(232, "Permission Profile");
+        this.getEntityFields(233, "Profile Permission Association");
+        this.getEntityFields(234, "Owner Permission Rule");
+        this.getEntityFields(235, "Shared Permission Rule");
+        this.getEntityFields(236, "Global Permission Rule");
+        this.getEntityFields(237, "Unit Association Permission Rule");
+        this.getEntityFields(238, "Manager Permission Profile");
+        this.getEntityFields(240, "Timesheet Note");
+        this.getEntityFields(241, "Unit Association Type");
+        this.getEntityFields(242, "OBJECT242.");
+        this.getEntityFields(243, "OBJECT243.");
+        this.getEntityFields(246, "Manager Permission Rule");
+        this.getEntityFields(247, "Unit Special Access Permission Rule");
+        this.getEntityFields(248, "OBJECT248.");
+        this.getEntityFields(249, "OBJECT249.");
+        this.getEntityFields(250, "Staffing Route-To Setting");
+        this.getEntityFields(251, "OBJECT251.");
+        this.getEntityFields(252, "Project Category");
+        this.getEntityFields(253, "Self Service Admin");
+        this.getEntityFields(254, "Self Service Admin");
+        this.getEntityFields(255, "Searchable Fields / Self Service Admin field extension");
+        this.getEntityFields(256, "Field Definition");
+        this.getEntityFields(262, "Project Audit");
+        this.getEntityFields(263, "Task Audit");
+        this.getEntityFields(264, "Resource Audit");
+        this.getEntityFields(266, "Project Log Audit");
+        this.getEntityFields(268, "OBJECT268.");
+        this.getEntityFields(269, "OBJECT269.");
+        this.getEntityFields(271, "Portfolio Audit");
+        this.getEntityFields(280, "Organization Internal Rates");
+        this.getEntityFields(281, "Rate Detail");
+        this.getEntityFields(282, "Organization Finance Settings");
+        this.getEntityFields(283, "OBJECT283.");
+        this.getEntityFields(284, "OBJECT284."); 
+
+    },
+    getEntityFields: function (entityTypeId, entityName) {
+        try {
+            var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.getEntityFields');
+
+            //override authentication profile 
+            //authentication type ='basic'
+            //r.setAuthentication(authentication type,profile name);
+
+            s.setStringParameter('getEntityFields.sessionId', this.getToken());
+            s.setStringParameter('getEntityFields.entityTypeId', entityTypeId);
+            s.setStringParameter('getEntityFields.mode', '0');
+            var response = s.execute();
+            var responseBody = response.getBody();
+            var xmldoc = new XMLDocument(responseBody);
+            var nodes = xmldoc.getNodes("//getEntityFieldsResponse//return"); // two, three, and two
+            gs.print("Processing Entity:" + entityName);
+            gs.print("Fields:" + nodes.length);
+
+            this.clearFieldTable(entityName);
+            for (var i = 0; i < nodes.length ; i++) {
+                var node = nodes.item(i);
+                if (node) {
+                    //gs.print("node found");
+                    // gs.print(node.nodeName);
+                    if (node.nodeName == "ns:return") {
+                        //gs.print("found return");
+                        //Found data node
+                        var rec = new GlideRecord("u_innotas_field_data");
+                        rec.initialize();
+                        for (var j = 0; j < 12; j++) {
+
+                            rec.u_entity_type_id = entityTypeId;
+                            rec.u_entity_name = entityName;
+                            var node = nodes.item(i);
+                            var id = node.item(j);
+                            //gs.print("id:"+id.nodeName+" value:"+id.lastChild.nodeValue);
+                            var field = id.nodeName;
+                            var value = id.textContent;
+                            switch (String(field)) {
+                                case "ax21:defaultValue":
+                                    rec.u_default_value = value;
+                                    break;
+                                case "ax21:fieldLength":
+                                    rec.u_field_length = value;
+                                    break;
+                                case "ax21:fieldSubTypeId":
+                                    rec.u_field_subtype_id = value;
+                                    break;
+                                case "ax21:fieldTypeId":
+                                    rec.u_field_type_id = value;
+                                    break;
+                                case "ax21:isRequired":
+                                    rec.u_is_required = value;
+                                    break;
+                                case "ax21:label":
+                                    rec.u_label = value;
+                                    break;
+                                case "ax21:method":
+                                    rec.u_method = value;
+                                    break;
+                                case "ax21:methodId":
+                                    rec.u_method_id = value;
+                                    break;
+                                case "ax21:onInsert":
+                                    rec.u_on_insert = value;
+                                    break;
+                                case "ax21:onSelect":
+                                    rec.u_on_select = value;
+                                    break;
+                                case "ax21:onUpdate":
+                                    rec.u_on_update = value;
+                                    break;
+                                case "ax21:sequence":
+                                    rec.u_sequence = value;
+                                    break;
+                                case "default":
+                                    gs.print("unknown field:" + field);
+
+                            }
+
+                            gs.print("Field:"+field+" Value:"+value);
+
+                        }
+						 
+						rec.u_server=this.instanceName;
+					 
+                        rec.insert();
+                    }
+                }
+                else {
+                    gs.print("no node");
+                }
+
+            }
+            gs.print("Processing Entity:" + entityName + " -Completed.");
+            return entityName + "(Entity)-completed.";
+        }
+        catch (ex) {
+            var message = ex.getMessage();
+        }
+    },
+    getToken: function () {
+        try {
+            var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.login');
+			var Encrypter = new GlideEncrypter(); 
+            //override authentication profile 
+            //authentication type ='basic'
+            //r.setAuthentication(authentication type,profile name);
+			var cred = new GlideRecord("u_innotas_server_instance");
+			cred.addActiveQuery();
+			cred.query();
+			if (cred.next())
+			{
+				this.instanceName=cred.u_server;
+				var decrypted = Encrypter.decrypt(cred.u_api_password);  
+				 s.setStringParameter('login.username', cred.u_api_user);
+                 s.setStringParameter('login.password', decrypted);
+			}
+            s.setStringParameter('login.sendAlerts', '');
+			 
+            var response = s.execute();
+            var responseBody = response.getBody();
+            var soapxmlResponse = new XMLDocument(responseBody);
+            var token = soapxmlResponse.getNodeText("//loginResponse//return"); // returned as 'invalid' or 'active'  
+            var status = response.getStatusCode();
+            return token;
+        }
+        catch (ex) {
+            var message = ex.message;
+			return message;
+        }
+    },
+	getTrackedTasks: function() {
+	  try { 
+		 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.getEntitiesByFilter');
+
+		//override authentication profile 
+		//authentication type ='basic'
+		//r.setAuthentication(authentication type,profile name);
+
+		 //s.setStringParameter('getEntitiesByFilter.fieldsRequest', '');
+		 s.setStringParameter('getEntitiesByFilter.filter', '1724753604');
+		 s.setStringParameter('getEntitiesByFilter.sessionId', this.getToken());
+		 s.setStringParameter('getEntitiesByFilter.entityTypeId', '5');
+		 var response = s.execute();
+		 var responseBody = response.getBody(); 
+		 var status = response.getStatusCode();
+		 return responseBody;
+		}
+		catch(ex) { 
+		 var message = ex.getMessage();
+	   }	
+	},
+	getUntrackedTasks: function() {
+	  try { 
+		 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.getEntitiesByFilter');
+
+		//override authentication profile 
+		//authentication type ='basic'
+		//r.setAuthentication(authentication type,profile name);
+
+		 //s.setStringParameter('getEntitiesByFilter.fieldsRequest', '');
+		 s.setStringParameter('getEntitiesByFilter.filter', '1724756257');
+		 s.setStringParameter('getEntitiesByFilter.sessionId', this.getToken());
+		 s.setStringParameter('getEntitiesByFilter.entityTypeId', '5');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest', '50028');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest2', '50056');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest3', '595');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest4', '594');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest5', '598');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest6', '504');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest7', '1722263261');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest8', '1725712044');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest9', '1722267605');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest10', '1725702524');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest11', '1724750120');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest12', '529');
+		  s.setStringParameter('getEntitiesByFilter.fieldsRequest13', '511');
+		 var response = s.execute();
+		 var responseBody = response.getBody(); 
+		 var status = response.getStatusCode();
+		 return responseBody;
+		}
+		catch(ex) { 
+		 var message = ex.getMessage();
+	   }	
+	},
+	parseTasks: function (payload,count) {
+		var xmldoc = new XMLDocument(payload);
+		var SNFeedback="";
+		gs.print(payload);
+		var nodes = xmldoc.getNodes("//getEntitiesByFilterResponse//return"); // two, three, and two
+		//gs.print("Processing Entity:" + entityName);
+		gs.print("EntityCount:" + nodes.length);
+		if (count < 0)
+		{
+			limit = nodes.length;
+		}
+		else
+		{
+			limit = count;
+		}
+		for (var i = 0; i < limit ; i++) {
+			    
+				
+                var node = nodes.item(i);
+                if (node) {
+					var task_rec = new GlideRecord('u_innotas_task');
+					task_rec.initialize();
+                    //gs.print("node found");
+                     gs.print("-------------------------------------------");
+                   if (node.nodeName == "ns:return") {
+                        //Found data node
+                        var rec = node.item(0);
+                        gs.print("id:" + rec.nodeName + " value:" + rec.lastChild.nodeValue);
+					    //now find ax21:methodValues nodes
+					    task_rec.u_taskid = rec.lastChild.nodeValue;
+					   
+						for (var j = 0; j < node.childNodes.length ;j++) {
+							 
+                            var id = node.item(j);
+							var field = id.nodeName;
+                            var value = id.textContent;
+							if (field=="ax21:methodValues")
+							{
+								var val=id.childNodes.item(0).textContent;
+								var code=id.childNodes.item(1).textContent;
+								switch (String(code)) {
+									case "50028": //percentComplete
+										//rec.u_default_value = val;
+										gs.print("% Complete: "+val);
+										break;
+									case "50056": //Active?
+										gs.print("Active?: "+val);
+										break;
+									case "595": //Create Date
+										gs.print("Create Date: "+val);
+										var gdt = new GlideDateTime("2011-01-01 12:00:00");
+										gdt.setValueUTC(val, "EEE MMM dd HH:mm:ss z yyyy");
+										task_rec.u_create_date= gdt;
+										break;
+									case "594": //Created By
+										gs.print("Created By: "+val+ " SN User("+this.getUser(val)+")");
+										task_rec.u_created_by = this.getUser(val);
+										break;
+									case "598": //Last Modified Date
+										gs.print("Last Modified Date: "+val);
+										var gdt2 = new GlideDateTime("2011-01-01 12:00:00");
+										gdt2.setValueUTC(val, "EEE MMM dd HH:mm:ss z yyyy");
+										task_rec.u_last_modified_date= gdt2;
+										break;
+									case "504": //Description
+										gs.print("Description: "+val);
+										task_rec.description = val;
+										break;
+									case "1722263261": // SN Assignment Group
+										var groupId=this.getSNGroupId(val);
+										gs.print("SN Assignment Group:"+ val +" SN_ID:"+groupId);
+										if (groupId=='')
+										{
+										   SNFeedback="No Cooresponding ServiceNow Group. Task assigned to Requestor.";	
+										   gs.print(SNFeedback);
+										   
+										   	
+										}
+										else
+										{
+										  task_rec.assignment_group=groupId;
+										}
+										break;
+									case "1725712044": //SN Link
+										gs.print("SN Link:"+ val);
+										break;
+									case "1722267605": //SN Sync?
+										gs.print("SN Sync:"+ val);
+										task_rec.u_sn_sync=val;
+										break;
+									case "1725702524": //SN Task ID
+										gs.print("SN Task ID:"+ val);
+										
+										break;
+									case "1724750120": //SN Tracked
+										gs.print("SN Tracked?:"+ val);
+										task_rec.u_sn_tracked=val;
+										break;
+									case "529": //Title
+										gs.print("Title:"+ val);
+										task_rec.u_title=val;
+										break;
+									case "511": //Status
+										gs.print("Status:"+ val);
+										task_rec.u_status=val;
+										break;
+								}
+							}
+							
+
+						}
+                    }
+					
+                   //If there was an error.
+					switch (String(SNFeedback)) {
+						case "No Cooresponding ServiceNow Group. Task assigned to Requestor.": //Status
+							//Assign ticket to creator
+							var user = new GlideRecord('sys_user');
+							user.addQuery('user_name',task_rec.u_created_by);
+							user.query();
+							user.next();
+
+							task_rec.setValue('assigned_to',user.sys_id);
+							gs.print("Assigning task to:" + user.user_name);;
+							break;
+					}
+				   
+					
+                   task_rec.update();
+				   this.updateSNTrackingNumberOnRemoteInnotasTask(task_rec.u_taskid,task_rec.number);
+				   this.updateSNLinkOnRemoteInnotasTask(task_rec.u_taskid,task_rec.getLink());
+				   //this.updateSNTrackedOnRemoteInnotasTask(task_rec.u_taskid,SNFeedback);
+					this.updateSNTrackedOnRemoteInnotasTask(task_rec.u_taskid,"Yes");
+				   SNFeedback="";
+					
+                }
+                else {
+                    gs.print("no node");
+                }
+
+            }
+
+	},
+	getSNGroupId: function(groupName){
+	   	var rec = new GlideRecord('sys_user_group');
+		rec.addQuery("name",groupName);
+		rec.query();
+		var id = "";
+		while( rec.next())
+		{
+			gs.print("Found SN Group:"+rec.name);
+			return rec.sys_id;
+		}
+		return id;
+	},
+	getSNGroupList: function(){
+		try { 
+			 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.getListValues');
+
+			//override authentication profile 
+			//authentication type ='basic'
+			//r.setAuthentication(authentication type,profile name);
+
+			 s.setStringParameter('getListValues.sessionId', this.getToken());
+			 s.setStringParameter('getListValues.fieldTypeId', '100');
+			 s.setStringParameter('getListValues.fieldSubTypeId', '1722260658');
+			 var response = s.execute();
+			 var responseBody = response.getBody(); 
+			 var status = response.getStatusCode();
+			}
+			catch(ex) { 
+			 var message = ex.getMessage();
+		}
+	},
+	getUser: function(id){
+	  try { 
+			 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.selectEntity');
+ 
+			 s.setStringParameter('selectEntity.sessionId', this.getToken());
+			 s.setStringParameter('selectEntity.entityTypeId', '23');
+			 s.setStringParameter('selectEntity.entityId', id);
+			 
+			 var response = s.execute();
+			 var responseBody = response.getBody(); 
+			 var status = response.getStatusCode();
+		     var xmldoc = new XMLDocument(responseBody);
+		     gs.print(responseBody);
+		     var nodes = xmldoc.getNodes("//selectEntityResponse//return"); // two, three, and two
+			//gs.print("Processing Entity:" + entityName);
+			gs.print("EntityCount:" + nodes.length);
+		    if (nodes.length==0)
+			{
+				return "-1";//No user
+			}
+			for (var i = 0; i < nodes.length ; i++) {
+                var node = nodes.item(i);
+                if (node) {
+                    //gs.print("node found");
+                     gs.print("-------------------------------------------");
+                   if (node.nodeName == "ns:return") {
+                        //Found data node
+                        var rec = node.item(0);
+                        gs.print("id:" + rec.nodeName + " value:" + rec.lastChild.nodeValue);
+					    //now find ax21:methodValues nodes
+					   
+						for (var j = 0; j < node.childNodes.length ;j++) {
+							 
+                             var id = node.item(j);
+							var field = id.nodeName;
+                            var value = id.textContent;
+							if (field=="ax21:methodValues")
+							{
+								var val=id.childNodes.item(0).textContent;
+								var code=id.childNodes.item(1).textContent;
+								switch (String(code)) {
+									case "2305": //percentComplete
+										//rec.u_default_value = val;
+										gs.print("Resource: "+val);
+										break;
+									case "2312": //Title?
+										gs.print("Title: "+val);
+										break;
+									case "2311": //Active
+										gs.print("Active: "+val);
+										break;
+									case "2307": //Email
+										gs.print("Email: "+val);
+										return val;
+										/*var user_rec = new GlideRecord('sys_user');
+										user_rec.addQuery('email','CONTAINS', val);
+										user_rec.query();
+										while (user_rec.next()) {   
+											 gs.print("Found SN User:"+ user_rec.name +" ("+user_rec.sys_id+")");
+										}
+										if (user_rec)
+										{
+											//return user_rec.sys_id;
+										}
+										else
+										{
+											//return "NO USER";
+										}*/
+										break;
+								 
+								}
+							}
+							
+
+						}
+                    }
+ 
+                   
+                }
+                else {
+                    gs.print("no node");
+                }
+
+		    }
+			}
+		catch(ex) { 
+			var message = ex.getMessage();
+		}
+		
+	},
+    getProjects: function () {
+        try {
+            var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.findEntityNoFilters');
+
+            //override authentication profile 
+            //authentication type ='basic'
+            //r.setAuthentication(authentication type,profile name);
+            s.setStringParameter('findEntity.entityTypeId', '4');
+
+            s.setStringParameter('findEntity.sessionId', this.getToken());
+
+            var response = s.execute();
+            var responseBody = response.getBody();
+            var xmldoc = new XMLDocument(responseBody);
+            var nodes = xmldoc.getNodes("//findEntityResponse//*"); // two, three, and two
+            gs.print("nodes:" + nodes.length);
+            for (var i = 0; i < 1; i++) {
+                gs.print(i);
+                var node = nodes.item(i);
+                if (node) {
+                    gs.print("node found");
+                    gs.print(node.nodeName);
+                    if (node.nodeName == "ns:return") {
+                        gs.print("found return");
+                        //Found data node
+                        var rec = node.item(0);
+                        gs.print("id:" + rec.nodeName + " value:" + rec.lastChild.nodeValue);
+                    }
+                }
+                else {
+                    gs.print("no node");
+                }
+
+            }
+
+
+            var status = response.getStatusCode();
+            return "done";
+        }
+        catch (ex) {
+            var message = ex.getMessage();
+            return message;
+        }
+
+    },
+	reset: function(){
+	   var task_rec = new GlideRecord('u_innotas_task');
+	   task_rec.AddQuery('active',true);
+	   task_rec.query();
+	   while(task_rec.next())
+	   {
+		   this.updateSNTrackingNumberOnRemoteInnotasTask(task_rec.u_taskid,'');
+		   this.updateSNLinkOnRemoteInnotasTask(task_rec.u_taskid,'');
+		   
+		   gs.print("Innotas Task:"+task_rec.u_taskid+" Cleared..");
+	   }
+		
+	},
+	updateSNTrackedOnRemoteInnotasTask: function (innotasId,serviceNowId){
+		
+		try { 
+			 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.updateEntity');
+
+			//override authentication profile 
+			//authentication type ='basic'
+			//r.setAuthentication(authentication type,profile name);
+
+			 s.setStringParameter('updateEntity.sessionId', this.getToken());
+			 s.setStringParameter('updateEntity.entityTypeId', '5');
+			 s.setStringParameter('valuePairs.elementValue', 'serviceNowId');
+			 s.setStringParameter('valuePairs.id', '1725702524'); //Innotas target field: 1725702524 SN Task ID
+			 s.setStringParameter('updateEntity.entityId', innotasId);
+			 var response = s.execute();
+			 var responseBody = response.getBody(); 
+			 var status = response.getStatusCode();
+			 
+		}
+		catch(ex) { 
+			 var message = ex.getMessage();
+		}
+	},
+	updateSNTrackingNumberOnRemoteInnotasTask: function (innotasId,serviceNowId){
+		
+		try { 
+			 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.updateEntity');
+
+			//override authentication profile 
+			//authentication type ='basic'
+			//r.setAuthentication(authentication type,profile name);
+
+			 s.setStringParameter('updateEntity.sessionId', this.getToken());
+			 s.setStringParameter('updateEntity.entityTypeId', '5');
+			 s.setStringParameter('valuePairs.elementValue', serviceNowId);
+			 s.setStringParameter('valuePairs.id', '1725702524'); //Innotas target field: 1725702524 SN Task ID
+			 s.setStringParameter('updateEntity.entityId', innotasId);
+			 var response = s.execute();
+			 var responseBody = response.getBody(); 
+			 var status = response.getStatusCode();
+			 
+		}
+		catch(ex) { 
+			 var message = ex.getMessage();
+		}
+	},
+	updateSNTrackedOnRemoteInnotasTask: function (innotasId,message){
+		
+		try { 
+			 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.updateEntity');
+
+			//override authentication profile 
+			//authentication type ='basic'
+			//r.setAuthentication(authentication type,profile name);
+
+			 s.setStringParameter('updateEntity.sessionId', this.getToken());
+			 s.setStringParameter('updateEntity.entityTypeId', '5');
+			 s.setStringParameter('valuePairs.elementValue', serviceNowId);
+			 s.setStringParameter('valuePairs.id', '1724750120'); //Innotas target field: 1725702524 SN Tracked?
+			 s.setStringParameter('updateEntity.entityId', message);
+			 var response = s.execute();
+			 var responseBody = response.getBody(); 
+			 var status = response.getStatusCode();
+			 
+		}
+		catch(ex) { 
+			 var message = ex.getMessage();
+		}
+	},
+	updateSNLinkOnRemoteInnotasTask: function (innotasId,link){
+		
+		try { 
+			 var s = new sn_ws.SOAPMessageV2('Innotas Web API', 'MainServiceSoap11Binding.updateEntity');
+     		 gs.print("Link:"+link);
+			 if (link!='')
+			 {
+			   link = '<a href="https://greycodev.service-now.com/'+link+'">Link</a>';
+			 }
+			 s.setStringParameter('updateEntity.sessionId', this.getToken());
+			 s.setStringParameter('updateEntity.entityTypeId', '5');
+			 s.setStringParameter('valuePairs.elementValue', link);
+			 s.setStringParameter('valuePairs.id', '1725712044'); //Innotas target field: 1725712044 SN Link
+			 s.setStringParameter('updateEntity.entityId', innotasId);
+			 var response = s.execute();
+			 var responseBody = response.getBody(); 
+			 var status = response.getStatusCode();
+		}
+		catch(ex) { 
+			 var message = ex.getMessage();
+		}
+	},
+    type: 'InnotasIntegrationServer'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-10-23 11:38:52</sys_created_on>
+        <sys_id>89f80a640f4603008fc547bce1050e44</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>InnotasIntegrationServer</sys_name>
+        <sys_package display_value="Innotas" source="x_133346_innotas">1c84b3d00f4203008fc547bce1050eec</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Innotas">1c84b3d00f4203008fc547bce1050eec</sys_scope>
+        <sys_update_name>sys_script_include_89f80a640f4603008fc547bce1050e44</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-10-23 11:38:52</sys_updated_on>
+    </sys_script_include>
+</record_update>
