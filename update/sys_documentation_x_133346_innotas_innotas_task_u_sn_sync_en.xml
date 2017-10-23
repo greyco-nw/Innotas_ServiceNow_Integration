@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="u_sn_sync" label="SN Sync" language="en" table="x_133346_innotas_innotas_task">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_sn_sync</element>
+            <help/>
+            <hint/>
+            <label>SN Sync</label>
+            <language>en</language>
+            <name>x_133346_innotas_innotas_task</name>
+            <plural>SN Syncs</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2017-10-23 01:20:57</sys_created_on>
+            <sys_id>8a7c33580f4203008fc547bce1050ef2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>SN Sync</sys_name>
+            <sys_package display_value="Innotas" source="x_133346_innotas">1c84b3d00f4203008fc547bce1050eec</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Innotas">1c84b3d00f4203008fc547bce1050eec</sys_scope>
+            <sys_update_name>sys_documentation_x_133346_innotas_innotas_task_u_sn_sync_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2017-10-23 01:20:57</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>
