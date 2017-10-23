@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Innotas Field Data" max_length="40" name="x_133346_innotas_innotas_field_data" type="collection">
+        <element label="Default Value" max_length="80" name="u_default_value" type="string"/>
+        <element label="Entity Name" max_length="80" name="u_entity_name" type="string"/>
+        <element label="Entity Type Id" max_length="80" name="u_entity_type_id" type="string"/>
+        <element label="Field Length" max_length="80" name="u_field_length" type="string"/>
+        <element label="Field SubType Id" max_length="80" name="u_field_subtype_id" type="string"/>
+        <element label="Field Type Id" max_length="80" name="u_field_type_id" type="string"/>
+        <element label="Is Required" max_length="80" name="u_is_required" type="string"/>
+        <element label="Label" max_length="80" name="u_label" type="string"/>
+        <element label="Method" max_length="80" name="u_method" type="string"/>
+        <element label="Method Id" max_length="80" name="u_method_id" type="string"/>
+        <element label="On Insert" max_length="80" name="u_on_insert" type="string"/>
+        <element label="On Select" max_length="80" name="u_on_select" type="string"/>
+        <element label="On Update" max_length="80" name="u_on_update" type="string"/>
+        <element label="Sequence" max_length="80" name="u_sequence" type="string"/>
+        <element label="Server" max_length="80" name="u_server" type="string"/>
+    </element>
+</database>
