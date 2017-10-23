@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Innotas Server Instance" max_length="40" name="x_133346_innotas_innotas_server_instance" type="collection">
+        <element label="Active" max_length="40" name="u_active" type="boolean"/>
+        <element label="API Password" max_length="255" name="u_api_password" type="password2"/>
+        <element label="API User" max_length="80" name="u_api_user" type="string"/>
+        <element label="Platform" max_length="80" name="u_platform" type="string"/>
+    </element>
+</database>
